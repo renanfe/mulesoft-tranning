@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="project-zero-Hello-World" doc:id="15941063-6c6c-4430-bc79-24a8da1dec75" >
+		<http:listener doc:name="GET USER Listener" doc:id="3f59694f-233e-455e-846f-35d10b508c82" config-ref="HTTP_Listener_config" path="/hello-world">
+			<http:error-response statusCode="404" />
+		</http:listener>
+		<logger level="INFO" doc:name="GET USER Log" doc:id="2551a971-a106-4d93-aa5a-87aa287db8a6" message='#["Entrou no log" ++ flow.name]'/>
+		<set-payload value='#["Hello World"]' doc:name="GET USER Payload" doc:id="8285a6b2-26db-4930-80ac-2ea7ddbd5690" mimeType="application/json"/>
+	</flow>
+	<flow name="project-zero-uri-param" doc:id="7c159c07-da75-4239-9fd6-aa80c5562bac" >
+		<http:listener doc:name="GET USER ID Listener" doc:id="f764631d-b999-4eff-b86f-f00144854ad8" config-ref="HTTP_Listener_config" path="/user/{ID}" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="GET USER ID Log" doc:id="11fd37eb-eb18-4477-8793-34cc5136ab13" message='#["Entrou no flow - " ++ flow.name]'/>
+		<set-payload value='#[attributes.uriParams."ID"]' doc:name="Set Payload" doc:id="2fd17344-f1d1-415b-a50a-d91b851ab4f0" />
+	</flow>
+	<flow name="project-zero-query-param" doc:id="76ef0e06-44ce-4d64-acb5-62f6556f62dd" >
+		<http:listener doc:name="GET USER Listener" doc:id="b237fe70-d18c-42af-a3e3-4455e54a28de" config-ref="HTTP_Listener_config" path="/user" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="GET USER ID log" doc:id="0c8b4640-46e3-404a-a2f7-7ee5667c6afa" message='#["Entrou no flow - " ++ flow.name]'/>
+		<set-payload doc:name="GET USER ID Payload" doc:id="ce9ae6fa-635d-48da-b25c-a76eb9e707fa" value="#[%dw 2.0&#10;output application/json&#10;---&#10;attributes.queryParams]"/>
+	</flow>
+</mule>
